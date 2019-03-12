@@ -16,6 +16,9 @@ import AuthorMapping from './author-mapping-item';
 import SiteUsersFetcher from 'components/site-users-fetcher';
 import UsersStore from 'lib/users/store';
 
+import ActionButtonContainer from 'my-sites/importer/action-buttons/container';
+import CloseButton from 'my-sites/importer/action-buttons/close-button';
+
 class AuthorMappingPane extends React.PureComponent {
 	static displayName = 'AuthorMappingPane';
 
@@ -130,6 +133,8 @@ class AuthorMappingPane extends React.PureComponent {
 			onStartImport,
 			siteId,
 			sourceType,
+			importerStatus,
+			site,
 		} = this.props;
 		const canStartImport = hasSingleAuthor || sourceAuthors.some( author => author.mappedTo );
 		const targetUserCount = this.getUserCount();
@@ -159,9 +164,12 @@ class AuthorMappingPane extends React.PureComponent {
 						/>
 					);
 				} ) }
-				<Button disabled={ ! canStartImport } onClick={ onStartImport }>
-					{ this.props.translate( 'Start Import' ) }
-				</Button>
+				<ActionButtonContainer>
+					<CloseButton importerStatus={ importerStatus } site={ site } isEnabled />
+					<Button disabled={ ! canStartImport } onClick={ onStartImport }>
+						{ this.props.translate( 'Start Import' ) }
+					</Button>
+				</ActionButtonContainer>
 			</div>
 		);
 	}
