@@ -22,7 +22,7 @@ export const saveSiteUserType = action =>
 		{
 			method: 'POST',
 			apiNamespace: 'wpcom/v2',
-			path: `/sites/${ action.siteId }/site-ownership`,
+			path: `/sites/${ action.siteId }/user-type`,
 			body: {
 				site_user_type: action.siteUserType,
 			},
