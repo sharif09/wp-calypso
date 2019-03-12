@@ -8,16 +8,15 @@
  * External dependencies
  */
 const _ = require( 'lodash' );
-const fs = require( 'fs' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const AssetsWriter = require( './server/bundler/assets-writer' );
 const { BundleAnalyzerPlugin } = require( 'webpack-bundle-analyzer' );
-const TerserPlugin = require( 'terser-webpack-plugin' );
 const CircularDependencyPlugin = require( 'circular-dependency-plugin' );
 const DuplicatePackageCheckerPlugin = require( 'duplicate-package-checker-webpack-plugin' );
 const MomentTimezoneDataPlugin = require( 'moment-timezone-data-webpack-plugin' );
 const SassConfig = require( '@automattic/calypso-build/webpack/sass' );
+const Minimizer = require( '@automattic/calypso-build/webpack/minify' );
 
 /**
  * Internal dependencies
@@ -134,6 +133,19 @@ function getWebpackConfig( {
 	cssFilename =
 		cssFilename ||
 		( isDevelopment || calypsoEnv === 'desktop' ? '[name].css' : '[name].[chunkhash].css' );
+	const minimizerConfig = Minimizer( {
+		cache: process.env.CIRCLECI
+			? `${ process.env.HOME }/terser-cache`
+			: 'docker' !== process.env.CONTAINER,
+		parallel: workerCount,
+		sourceMap: Boolean( process.env.SOURCEMAP ),
+		terserOptions: {
+			ecma: 5,
+			safari10: true,
+			mangle: calypsoEnv !== 'desktop',
+		},
+		shouldMinify,
+	} );
 
 	const webpackConfig = {
 		bail: ! isDevelopment,
@@ -158,21 +170,8 @@ function getWebpackConfig( {
 			runtimeChunk: codeSplit ? { name: 'manifest' } : false,
 			moduleIds: 'named',
 			chunkIds: isDevelopment ? 'named' : 'natural',
-			minimize: shouldMinify,
-			minimizer: [
-				new TerserPlugin( {
-					cache: process.env.CIRCLECI
-						? `${ process.env.HOME }/terser-cache`
-						: 'docker' !== process.env.CONTAINER,
-					parallel: workerCount,
-					sourceMap: Boolean( process.env.SOURCEMAP ),
-					terserOptions: {
-						ecma: 5,
-						safari10: true,
-						mangle: calypsoEnv !== 'desktop',
-					},
-				} ),
-			],
+			minimize: minimizerConfig.minimize,
+			minimizer: minimizerConfig.minimizer,
 		},
 		module: {
 			// avoids this warning:
