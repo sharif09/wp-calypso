@@ -69,6 +69,28 @@
         "refx": "^3.1.1",
         "resize-observer-polyfill": "^1.5.1",
         "swiper": "4.4.6"
+      },
+      "dependencies": {
+        "debug": {
+          "version": "3.1.0",
+          "bundled": true,
+          "requires": {
+            "ms": "2.0.0"
+          }
+        },
+        "ms": {
+          "version": "2.0.0",
+          "bundled": true
+        },
+        "photon": {
+          "version": "2.0.1",
+          "bundled": true,
+          "requires": {
+            "crc32": "0.2.2",
+            "debug": "3.1.0",
+            "seed-random": "2.2.0"
+          }
+        }
       }
     },
     "@automattic/tree-select": {
@@ -17240,9 +17262,9 @@
       }
     },
     "source-map-support": {
-      "version": "0.5.10",
-      "resolved": "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.10.tgz",
-      "integrity": "sha512-YfQ3tQFTK/yzlGJuX8pTwa4tifQj4QS2Mj7UegOu8jAz59MqIiMGPXxQhVQiIMNzayuUSF/jEuVnfFF5JqybmQ==",
+      "version": "0.5.11",
+      "resolved": "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.11.tgz",
+      "integrity": "sha512-//sajEx/fGL3iw6fltKMdPvy8kL3kJ2O3iuYlRoT3k9Kb4BjOoZ+BZzaNHeuaruSt+Kf3Zk9tnfAQg9/AJqUVQ==",
       "requires": {
         "buffer-from": "^1.0.0",
         "source-map": "^0.6.0"
